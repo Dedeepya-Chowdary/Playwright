@@ -1,0 +1,42 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  - main
+
+# Specify the agent pool name'
+pool:
+  name: 'Votre Sante Agent Pool'  
+
+steps:
+
+# Install the specified version of Node.js (LTS version)
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18'  # Use the latest LTS version of Node.js
+  displayName: 'Install Node.js'
+
+# Install dependencies using npm ci (for consistent installs based on package-lock.json)
+- script: npm ci
+  displayName: 'Install dependencies with npm ci'
+
+# Install Playwright and its dependencies (including browsers)
+- script: npx playwright install --with-deps
+  displayName: 'Install Playwright browsers'
+
+# Run Playwright tests
+- script: npx playwright test
+  displayName: 'Run Playwright tests'
+  env:
+    CI: 'true'  # Ensures Playwright runs in CI mode (e.g., no visual UI, headless)
+
+# Publish Playwright test report as a pipeline artifact
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: playwright-report  # Path to the Playwright test report
+    artifact: playwright-report    # Name of the artifact to publish
+    publishLocation: 'pipeline'    # Location to publish the artifact
+  condition: succeededOrFailed()  # Always publish, even if the tests fail
+  displayName: 'Publish Playwright Test Report'
