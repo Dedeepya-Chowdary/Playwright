@@ -104,8 +104,10 @@ class CustomReporter {
         "Appointment with family doctor" : "Appointment with family doctor",
         "Appointment with clinic":"Appointment with clinic",
         "Cancel Appointment":"Cancel Appointment",
-        "Selfcare for Telephone Page" :"Self Care",
-        "Authentication with SAG" : "Authentication with SAG"
+        "Selfcare for Telephone Page" :"Self Care for Telephone page",
+        "Authentication with SAG" : "Authentication with SAG",
+        "Selfcare for virtual" : "Self Care for Virtual",
+        "Renew Appointment" : "Renew Appointment"
 
       },
       "fr":{
@@ -113,7 +115,9 @@ class CustomReporter {
         "Appointment with family doctor" : "Rendez-vous pour patient avec médecin de famille",
         "Appointment with clinic":"Rendez-vous pour patient inscrit de groupe",
         "Cancel Appointment":"Annuler un rendez-vous",
-        "Selfcare for Telephone Page":"Destination autosoins",
+        "Selfcare for Telephone Page" :"Autosoins - Page Téléphonique",
+        "Selfcare for virtual" : "Autosoins - Page Virtuelle",
+        "Renew Appointment" : "Renouveler le Rendez-vous",
         "Authentication with SAG":"Authentification avec SAG"
       }
     }

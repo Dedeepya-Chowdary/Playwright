@@ -18,25 +18,11 @@ export async function clickNextButton(page, env) {
  */
 export async function postalcode(page, env) {
   if (env.includes('uat')) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z 1X3');
+    await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
   } else if (env.includes('test')) {
     await page.getByRole('textbox', { name: 'Postal Code' }).fill('G8Z 1X3');
   } else {
     await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
-=======
-=======
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
-    await page.getByRole('textbox', { name: 'Code Postal' }).fill('G0R 0C6');
-  } else if (env.includes('test')) {
-    await page.getByRole('textbox', { name: 'Postal Code' }).fill('G8Z 1X3');
-  } else {
-    await page.getByRole('textbox', { name: 'Code Postal' }).fill('G0R 0C6');
-<<<<<<< HEAD
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
-=======
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
   }
 }
 
@@ -45,25 +31,11 @@ export async function postalcode(page, env) {
  */
 export async function postalcodepage(page, env) {
   if (env.includes('uat')) {
-<<<<<<< HEAD
-<<<<<<< HEAD
     await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G8Z1X3');
   } else if (env.includes('test')) {
     await page.getByRole('textbox', { name: 'ex: HTH1H1' }).fill('G8Z1X3');
   } else {
     await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G8Z1X3');
-=======
-=======
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
-    await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G0R0C6');
-  } else if (env.includes('test')) {
-    await page.getByRole('textbox', { name: 'ex: HTH1H1' }).fill('G0R0C6');
-  } else {
-    await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G0R0C6');
-<<<<<<< HEAD
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
-=======
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
   }
 }
 
@@ -77,5 +49,27 @@ export async function SAG(page, env) {
     await page.getByRole('link', { name: 'Se connecter' }).click();
   } else {
     await page.getByRole('listitem').click();
+  }
+}
+
+/**
+ * number sequential in patients details page based on evironment.
+ */
+export async function numbersequential(page, env) {
+  if (env.includes('test')) {
+    await page.getByRole('textbox', { name: 'Numero sequentiel' }).fill('1');
+  } else {
+    await page.getByRole('textbox', { name: 'Numéro séquentiel' }).fill('1');
+  }
+}
+
+/**
+ * acceder button in patients details page based on evironment.
+ */
+export async function accederbutton(page, env) {
+  if (env.includes('test')) {
+    await page.getByRole('button', { name: 'Accéder' }).click();
+  } else {
+    await page.getByRole('button', { name: 'Suivant' }).click();
   }
 }

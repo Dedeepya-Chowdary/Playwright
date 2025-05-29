@@ -22,18 +22,8 @@
         await page.getByRole('link', { name: 'Créer un compte' }).click();
         await page.getByRole('button', { name: 'Précédent' }).click();
         await page.getByRole('link', { name: 'Créer un compte' }).click();
-<<<<<<< HEAD
-<<<<<<< HEAD
-        await page.getByRole('textbox', { name: 'Nom d\'utilisateur' }).fill('sajja11');
-        await page.getByRole('textbox', { name: 'Adresse courriel' }).fill('sajjadedeepya11@gmail.com');
-=======
-        await page.getByRole('textbox', { name: 'Nom d\'utilisateur' }).fill('sajja1');
-        await page.getByRole('textbox', { name: 'Adresse courriel' }).fill('sajjadedeepya01@gmail.com');
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
-=======
-        await page.getByRole('textbox', { name: 'Nom d\'utilisateur' }).fill('sajja1');
-        await page.getByRole('textbox', { name: 'Adresse courriel' }).fill('sajjadedeepya01@gmail.com');
->>>>>>> 65a539a38da62b1976511df984628e978d4cccb3
+        await page.getByRole('textbox', { name: 'Nom d\'utilisateur' }).fill('sajja34');
+        await page.getByRole('textbox', { name: 'Adresse courriel' }).fill('sajjadedeepya34@gmail.com');
         await page.getByRole('textbox', { name: 'Mot de passe', exact: true }).fill('KrishnaDedu@143');
         await page.getByRole('textbox', { name: 'Confirmez le mot de passe' }).fill('KrishnaDedu@143');
         await page.locator('#checkMark').click();
