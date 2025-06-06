@@ -65,16 +65,16 @@ async function fillPatientDetails(page, env, data) {
   await page.getByRole('textbox', { name: 'Prénom' }).fill(data.firstName);
   await page.getByRole('textbox', { name: 'Numéro de téléphone' }).fill(data.phone);
   await page.getByRole('textbox', { name: "Numéro d'assurance maladie" }).fill(data.ramq);
-  await numbersequential(page, env);
+  await page.getByRole('textbox', { name: 'Numéro séquentiel' }).fill('1');
   await page.getByRole('spinbutton', { name: 'Jour' }).fill(data.day);
   if (data.month) await page.getByLabel('Mois').selectOption(data.month);
   await page.getByRole('spinbutton', { name: 'Année' }).fill(data.year);
   await page.getByLabel('Genre').selectOption(data.gender);
-  await postalcode(page, env);
+  await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
 }
 
 async function completeAppointment(page,env) {
-  await accederbutton(page, env);
+  await page.getByRole('button', { name: 'Suivant' }).click();
   await page.waitForTimeout(20000);
   // Check if appointments are available by looking for the first selector
 const appointmentLocator = page.locator('div.card-body span.lnr.lnr-store').first();

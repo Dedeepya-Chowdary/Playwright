@@ -105,9 +105,10 @@ class CustomReporter {
         "Appointment with clinic":"Appointment with clinic",
         "Cancel Appointment":"Cancel Appointment",
         "Selfcare for Telephone Page" :"Self Care for Telephone page",
-        "Authentication with SAG" : "Authentication with SAG",
+        "Vaccination with SAG" : "Vaccination with SAG",
         "Selfcare for virtual" : "Self Care for Virtual",
-        "Renew Appointment" : "Renew Appointment"
+        "Renew Appointment" : "Renew Appointment",
+        "Selfcare for In person Page":"Selfcare for In person Page"
 
       },
       "fr":{
@@ -118,7 +119,8 @@ class CustomReporter {
         "Selfcare for Telephone Page" :"Autosoins - Page Téléphonique",
         "Selfcare for virtual" : "Autosoins - Page Virtuelle",
         "Renew Appointment" : "Renouveler le Rendez-vous",
-        "Authentication with SAG":"Authentification avec SAG"
+        "Vaccination with SAG":"Vaccination avec le SAG",
+        "Selfcare for In person Page":"Libre-service pour la page en personne"
       }
     }
 

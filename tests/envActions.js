@@ -7,7 +7,7 @@ export async function clickNextButton(page, env) {
   if (env.includes('uat')) {
     await page.getByRole('button', { name: 'Suivant' }).click();
   } else if (env.includes('test')) {
-    await page.getByRole('button', { name: 'Continuer' }).click();
+    await page.getByRole('button', { name: 'Suivant' }).click();
   } else {
     await page.getByRole('button', { name: 'Suivant' }).click();
   }
@@ -20,7 +20,7 @@ export async function postalcode(page, env) {
   if (env.includes('uat')) {
     await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
   } else if (env.includes('test')) {
-    await page.getByRole('textbox', { name: 'Postal Code' }).fill('G8Z 1X3');
+    await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
   } else {
     await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
   }
@@ -33,7 +33,7 @@ export async function postalcodepage(page, env) {
   if (env.includes('uat')) {
     await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G8Z1X3');
   } else if (env.includes('test')) {
-    await page.getByRole('textbox', { name: 'ex: HTH1H1' }).fill('G8Z1X3');
+    await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G8Z1X3');
   } else {
     await page.getByRole('textbox', { name: 'ex: H1H1H1' }).fill('G8Z1X3');
   }
@@ -57,7 +57,7 @@ export async function SAG(page, env) {
  */
 export async function numbersequential(page, env) {
   if (env.includes('test')) {
-    await page.getByRole('textbox', { name: 'Numero sequentiel' }).fill('1');
+    await page.getByRole('textbox', { name: 'Numéro séquentiel' }).fill('1');
   } else {
     await page.getByRole('textbox', { name: 'Numéro séquentiel' }).fill('1');
   }
@@ -68,7 +68,7 @@ export async function numbersequential(page, env) {
  */
 export async function accederbutton(page, env) {
   if (env.includes('test')) {
-    await page.getByRole('button', { name: 'Accéder' }).click();
+    await page.getByRole('button', { name: 'Suivant' }).click();
   } else {
     await page.getByRole('button', { name: 'Suivant' }).click();
   }

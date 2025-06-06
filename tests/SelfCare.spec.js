@@ -20,18 +20,16 @@ test.describe('Self Care Tests', () => {
     await page.locator('#txtSearch').fill('Injection');
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByText('Vaccin', { exact: true }).click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.getByText('Oui', { exact: true }).click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.getByText('Au cours des 3 prochains jours').click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.waitForTimeout(10000);
     const page1Promise = page.waitForEvent('popup');
     await page.getByRole('button', { name: 'J\'accepte l\'option' }).click();
     const page1 = await page1Promise;
     await expect(page1).toHaveURL('https://portal3.clicsante.ca/');
-
-    await context.close();
   });
 
   test('Selfcare for Telephone Page', async ({ page },testInfo) => {
@@ -40,9 +38,9 @@ test.describe('Self Care Tests', () => {
     await page.locator('#txtSearch').fill('Head Pain');
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.locator('#divResp').getByText('Non').click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.getByText('mois [90 jours] et moins').click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.waitForTimeout(10000);
     await page.getByRole('button', { name: 'J\'accepte l\'option' }).click();
     await page.getByRole('button', { name: 'Accepter' }).click();
@@ -50,24 +48,24 @@ test.describe('Self Care Tests', () => {
     await expect(page).toHaveTitle('Accueil');
   });
 
-  /*test('Selfcare for In person Page', async ({ page },testInfo) => {
+  test('Selfcare for In person Page', async ({ page },testInfo) => {
     const env = testInfo.project.metadata.env;
     const waitPage = new WaitPage(page);
     await page.locator('#txtSearch').fill('bouchon de cire');
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByText('Oui', { exact: true }).click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.getByText('Oui', { exact: true }).click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.getByText('ans et plus').click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.locator('#divResp').getByText('Non').click();
-    await clickNextButton(page, env);
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.waitForTimeout(20000);
     await page.getByRole('button', { name: 'J\'accepte l\'option' }).click();
     await page.getByRole('button', { name: 'Accepter' }).click();
     await page.waitForTimeout(5000);
     await expect(page).toHaveTitle('Accueil');
-  });*/
+  });
 
 });

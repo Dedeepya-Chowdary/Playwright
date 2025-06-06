@@ -19,12 +19,12 @@ test.describe('Appointment Tests', () => {
     await page.getByRole('textbox', { name: 'Prénom' }).fill('Patient');
     await page.getByRole('textbox', { name: 'Numéro de téléphone' }).fill('(798) 901-3720');
     await page.getByRole('textbox', { name: 'Numéro d\'assurance maladie' }).fill('VOSP92010107');
-    await numbersequential(page, env);
+    await page.getByRole('textbox', { name: 'Numéro séquentiel' }).fill('1');
     await page.getByRole('spinbutton', { name: 'Jour' }).fill('1');
     await page.getByRole('spinbutton', { name: 'Année' }).fill('1992');
     await page.getByLabel('Genre').selectOption('male');
-    await postalcode(page, env);
-    await accederbutton(page, env);
+    await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
+    await page.getByRole('button', { name: 'Suivant' }).click();
     await page.locator('div.card-body span.lnr.lnr-store').first().click();
     const continuerButton = await page.getByRole('button', { name: 'Suivant' });
     const initialUrl = page.url();// if contiuner button needs 2 clicks to contiune
