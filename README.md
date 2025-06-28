@@ -2,7 +2,7 @@
 This project is a Playwright test suite designed to automate smoke testing for a votre sante web application. It includes tests for various functionalities such as authentication, booking appointments, canceling appointments, and self-care.
 
 # Project Structure
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+
 1.	tests/: Contains all the test specification files written in JavaScript.
 2.	AuthenticationwithSAG.spec.js: Tests for authentication with SAG to access vaccination,medicine records pf patient.
 3.	BookAppointment.spec.js: Steps required to booking appointments.
