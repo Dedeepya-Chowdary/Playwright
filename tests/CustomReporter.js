@@ -1,4 +1,3 @@
-// tests/CustomReporter.js
 const fs = require('fs');
 const path = require('path');
 
@@ -20,11 +19,22 @@ class CustomReporter {
     if (!this.results[env]) {
       this.results[env] = [];
     }
-    this.results[env].push({
+
+    const status = result.status === 'timedOut' ? 'failed' : result.status;
+    const latestResult = {
       title: test.title,
-      status: result.status,
+      status,
       duration: result.duration,
-    });
+    };
+
+
+    // Keep only the latest result by test title
+    const existingIndex = this.results[env].findIndex(t => t.title === test.title);
+    if (existingIndex !== -1) {
+      this.results[env][existingIndex] = latestResult;
+    } else {
+      this.results[env].push(latestResult);
+    }
   }
 
   onEnd() {
@@ -33,7 +43,6 @@ class CustomReporter {
   }
 
   generateReport() {
-    // Calculate summary and total duration for each environment
     const summary = {};
     const totalDuration = {};
     let totalPassed = 0;
@@ -52,7 +61,6 @@ class CustomReporter {
       totalFailed += failed;
     }
 
-    // Language translations
     const translations = {
       en: {
         lang: 'en',
@@ -63,6 +71,10 @@ class CustomReporter {
         testsFailed: 'Tests Failed',
         testDetails: 'Test Details',
         testName: 'Test Name',
+        teststatus: 'TEST Status',
+        devstatus: 'DEV Status',
+        uatstatus: 'UAT Status',
+        intstatus: 'INT Status',
         duration: 'DURATION FOR',
         systemEnv: 'System Details',
         name: 'Name',
@@ -73,6 +85,8 @@ class CustomReporter {
         skipped: 'skipped',
         testduration: "TEST Duration (ms)",
         uatduration: "UAT Duration (ms)",
+        devduration: "DEV Duration (ms)",
+        intduration: "INT Duration (ms)",
         toggleLang: 'Switch to French'
       },
       fr: {
@@ -84,6 +98,10 @@ class CustomReporter {
         testsFailed: 'Tests Échoués',
         testDetails: 'Détails des Tests',
         testName: 'Nom du Test',
+        teststatus: 'TEST Statut',
+        devstatus: 'DEV Statut',
+        uatstatus: 'UAT Statut',
+        intstatus: 'INT Statut',
         duration: 'DURÉE POUR',
         systemEnv: 'Détails Système',
         name: 'Nom',
@@ -94,37 +112,38 @@ class CustomReporter {
         skipped: 'ignoré',
         testduration: "TEST DURÉE (ms)",
         uatduration: "UAT DURÉE (ms)",
+        devduration: "DEV DURÉE (ms)",
+        intduration: "INT DURÉE (ms)",
         toggleLang: 'Passer à l\'Anglais'
       }
     };
 
     const testNames = {
-      "en":{
-        "Appointment for orphan":"Appointment for orphan",
-        "Appointment with family doctor" : "Appointment with family doctor",
-        "Appointment with clinic":"Appointment with clinic",
-        "Cancel Appointment":"Cancel Appointment",
-        "Selfcare for Telephone Page" :"Self Care for Telephone page",
-        "Vaccination with SAG" : "Vaccination with SAG",
-        "Selfcare for virtual" : "Self Care for Virtual",
-        "Renew Appointment" : "Renew Appointment",
-        "Selfcare for In person Page":"Selfcare for In person Page"
-
+      "en": {
+        "Appointment for orphan": "Appointment for orphan",
+        "Appointment for familydoc": "Appointment with family doctor",
+        "Appointment for clinic": "Appointment with clinic",
+        "Cancel Appointment": "Cancel Appointment",
+        "Selfcare for Telephone Page": "Self Care for Telephone page",
+        "Vaccination with SAG": "Vaccination with SAG",
+        "Selfcare for virtual": "Self Care for Virtual",
+        "Renew Appointment": "Renew Appointment",
+        "Selfcare for In person Page": "Selfcare for In person Page"
       },
-      "fr":{
-        "Appointment for orphan":"Rendez-vous pour un orphelin",
-        "Appointment with family doctor" : "Rendez-vous pour patient avec médecin de famille",
-        "Appointment with clinic":"Rendez-vous pour patient inscrit de groupe",
-        "Cancel Appointment":"Annuler un rendez-vous",
-        "Selfcare for Telephone Page" :"Autosoins - Page Téléphonique",
-        "Selfcare for virtual" : "Autosoins - Page Virtuelle",
-        "Renew Appointment" : "Renouveler le Rendez-vous",
-        "Vaccination with SAG":"Vaccination avec le SAG",
-        "Selfcare for In person Page":"Libre-service pour la page en personne"
+      "fr": {
+        "Appointment for orphan": "Rendez-vous pour un orphelin",
+        "Appointment for familydoc": "Rendez-vous pour patient avec médecin de famille",
+        "Appointment for clinic": "Rendez-vous pour patient inscrit de groupe",
+        "Cancel Appointment": "Annuler un rendez-vous",
+        "Selfcare for Telephone Page": "Autosoins - Page Téléphonique",
+        "Selfcare for virtual": "Autosoins - Page Virtuelle",
+        "Renew Appointment": "Renouveler le Rendez-vous",
+        "Vaccination with SAG": "Vaccination avec le SAG",
+        "Selfcare for In person Page": "Libre-service pour la page en personne"
       }
-    }
+    };
 
-    // Generate HTML content
+// Generate HTML content
     const htmlContent = `
       <!DOCTYPE html>
       <html lang="en">

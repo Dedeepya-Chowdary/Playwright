@@ -114,9 +114,9 @@
         <button class="lang-toggle" onclick="toggleLanguage()"></button>
 
         <div class="header">
-          <div><span class="trans" data-key="started"></span>: 5/20/2025, 2:05:13 PM</div>
-          <div><span class="trans" data-key="ended"></span>: 5/20/2025, 2:07:09 PM</div>
-          <div><span class="trans" data-key="testsPassed"></span>: 1</div>
+          <div><span class="trans" data-key="started"></span>: 2025-06-26, 9:30:02 a.m.</div>
+          <div><span class="trans" data-key="ended"></span>: 2025-06-26, 10:02:29 a.m.</div>
+          <div><span class="trans" data-key="testsPassed"></span>: 18</div>
           <div><span class="trans" data-key="testsFailed"></span>: 0</div>
         </div>
 
@@ -125,17 +125,37 @@
         <div class="summary">
           
             <div>
+              <h3>TEST</h3>
+              <canvas class="pie-chart" id="chart-test"></canvas>
+              <p><span class="trans" data-key="passed"></span>: 9, <span class="trans" data-key="failed"></span>: 0, <span class="trans" data-key="skipped"></span>: 0, 0 autres</p>
+              <div class="duration"><span class="trans" data-key="duration"></span> TEST: 962768 ms</div>
+              <script>
+                new Chart(document.getElementById('chart-test'), {
+                  type: 'pie',
+                  data: {
+                    labels: ['passed', 'failed', 'skipped'],
+                    datasets: [{
+                      data: [9, 0, 0],
+                      backgroundColor: ['#28a745', '#dc3545', '#ffc107']
+                    }]
+                  },
+                  options: { responsive: false }
+                });
+              </script>
+            </div>
+          
+            <div>
               <h3>UAT</h3>
               <canvas class="pie-chart" id="chart-uat"></canvas>
-              <p><span class="trans" data-key="passed"></span>: 1, <span class="trans" data-key="failed"></span>: 0, <span class="trans" data-key="skipped"></span>: 0, 0 autres</p>
-              <div class="duration"><span class="trans" data-key="duration"></span> UAT: 107693 ms</div>
+              <p><span class="trans" data-key="passed"></span>: 9, <span class="trans" data-key="failed"></span>: 0, <span class="trans" data-key="skipped"></span>: 0, 0 autres</p>
+              <div class="duration"><span class="trans" data-key="duration"></span> UAT: 957451 ms</div>
               <script>
                 new Chart(document.getElementById('chart-uat'), {
                   type: 'pie',
                   data: {
                     labels: ['passed', 'failed', 'skipped'],
                     datasets: [{
-                      data: [1, 0, 0],
+                      data: [9, 0, 0],
                       backgroundColor: ['#28a745', '#dc3545', '#ffc107']
                     }]
                   },
@@ -151,8 +171,11 @@
           <thead>
             <tr>
   <th><span class="trans" data-key="testName"></span></th>
-  <th>UAT</th>
+  <th>TEST</th><th>UAT</th>
   
+    <th>
+      <span class="trans duration-label" data-key="testduration" data-env="test">TEST Duration (ms)</span>
+    </th>
     <th>
       <span class="trans duration-label" data-key="uatduration" data-env="uat">UAT Duration (ms)</span>
     </th>
@@ -162,9 +185,57 @@
           <tbody>
             
         <tr>
-          <td><span class="testTrans" test-title="Authentication with SAG">Authentication with SAG</span></td>
-          <td class="passed"><span class="trans" data-key="passed"></span></td>
-          <td>107693</td>
+          <td><span class="testTrans" test-title="Appointment for orphan">Appointment for orphan</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>153111</td><td>131290</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Appointment for familydoc">Appointment for familydoc</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>146237</td><td>166504</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Appointment for clinic">Appointment for clinic</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>129492</td><td>130313</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Cancel Appointment">Cancel Appointment</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>66594</td><td>57682</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Renew Appointment">Renew Appointment</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>172653</td><td>174138</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Selfcare for virtual">Selfcare for virtual</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>62703</td><td>60183</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Selfcare for Telephone Page">Selfcare for Telephone Page</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>59208</td><td>59961</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Selfcare for In person Page">Selfcare for In person Page</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>74726</td><td>73859</td>
+        </tr>
+      
+        <tr>
+          <td><span class="testTrans" test-title="Vaccination with SAG">Vaccination with SAG</span></td>
+          <td class="passed"><span class="trans" data-key="passed"></span></td><td class="passed"><span class="trans" data-key="passed"></span></td>
+          <td>98044</td><td>103521</td>
         </tr>
       
           </tbody>
@@ -177,8 +248,8 @@
         </table>
 
         <script>
-          const translations = {"en":{"lang":"en","title":"TEST RESULTS","started":"Started","ended":"Ended","testsPassed":"Tests Passed","testsFailed":"Tests Failed","testDetails":"Test Details","testName":"Test Name","duration":"DURATION FOR","systemEnv":"System Details","name":"Name","value":"Value","os":"OS","passed":"passed","failed":"failed","skipped":"skipped","testduration":"TEST Duration (ms)","uatduration":"UAT Duration (ms)","toggleLang":"Switch to French"},"fr":{"lang":"fr","title":"RÉSULTATS DES TESTS","started":"Début","ended":"Fin","testsPassed":"Tests Réussis","testsFailed":"Tests Échoués","testDetails":"Détails des Tests","testName":"Nom du Test","duration":"DURÉE POUR","systemEnv":"Détails Système","name":"Nom","value":"Valeur","os":"OS","passed":"réussi","failed":"échoué","skipped":"ignoré","testduration":"TEST DURÉE (ms)","uatduration":"UAT DURÉE (ms)","toggleLang":"Passer à l'Anglais"}};
-          const testNames = {"en":{"Appointment for orphan":"Appointment for orphan","Appointment with family doctor":"Appointment with family doctor","Appointment with clinic":"Appointment with clinic","Cancel Appointment":"Cancel Appointment","Selfcare for Telephone Page":"Self Care","Authentication with SAG":"Authentication with SAG"},"fr":{"Appointment for orphan":"Rendez-vous pour un orphelin","Appointment with family doctor":"Rendez-vous pour patient avec médecin de famille","Appointment with clinic":"Rendez-vous pour patient inscrit de groupe","Cancel Appointment":"Annuler un rendez-vous","Selfcare for Telephone Page":"Destination autosoins","Authentication with SAG":"Authentification avec SAG"}};
+          const translations = {"en":{"lang":"en","title":"TEST RESULTS","started":"Started","ended":"Ended","testsPassed":"Tests Passed","testsFailed":"Tests Failed","testDetails":"Test Details","testName":"Test Name","teststatus":"TEST Status","devstatus":"DEV Status","uatstatus":"UAT Status","intstatus":"INT Status","duration":"DURATION FOR","systemEnv":"System Details","name":"Name","value":"Value","os":"OS","passed":"passed","failed":"failed","skipped":"skipped","testduration":"TEST Duration (ms)","uatduration":"UAT Duration (ms)","devduration":"DEV Duration (ms)","intduration":"INT Duration (ms)","toggleLang":"Switch to French"},"fr":{"lang":"fr","title":"RÉSULTATS DES TESTS","started":"Début","ended":"Fin","testsPassed":"Tests Réussis","testsFailed":"Tests Échoués","testDetails":"Détails des Tests","testName":"Nom du Test","teststatus":"TEST Statut","devstatus":"DEV Statut","uatstatus":"UAT Statut","intstatus":"INT Statut","duration":"DURÉE POUR","systemEnv":"Détails Système","name":"Nom","value":"Valeur","os":"OS","passed":"réussi","failed":"échoué","skipped":"ignoré","testduration":"TEST DURÉE (ms)","uatduration":"UAT DURÉE (ms)","devduration":"DEV DURÉE (ms)","intduration":"INT DURÉE (ms)","toggleLang":"Passer à l'Anglais"}};
+          const testNames = {"en":{"Appointment for orphan":"Appointment for orphan","Appointment for familydoc":"Appointment with family doctor","Appointment for clinic":"Appointment with clinic","Cancel Appointment":"Cancel Appointment","Selfcare for Telephone Page":"Self Care for Telephone page","Vaccination with SAG":"Vaccination with SAG","Selfcare for virtual":"Self Care for Virtual","Renew Appointment":"Renew Appointment","Selfcare for In person Page":"Selfcare for In person Page"},"fr":{"Appointment for orphan":"Rendez-vous pour un orphelin","Appointment for familydoc":"Rendez-vous pour patient avec médecin de famille","Appointment for clinic":"Rendez-vous pour patient inscrit de groupe","Cancel Appointment":"Annuler un rendez-vous","Selfcare for Telephone Page":"Autosoins - Page Téléphonique","Selfcare for virtual":"Autosoins - Page Virtuelle","Renew Appointment":"Renouveler le Rendez-vous","Vaccination with SAG":"Vaccination avec le SAG","Selfcare for In person Page":"Libre-service pour la page en personne"}};
           let currentLang = 'en';
 
           function toggleLanguage() {
@@ -209,6 +280,14 @@
             document.documentElement.lang = translations[currentLang].lang;
             
             // Update chart labels
+            
+              const charttest = document.getElementById('chart-test').getContext('2d');
+              Chart.getChart('chart-test').data.labels = [
+                translations[currentLang].passed,
+                translations[currentLang].failed,
+                translations[currentLang].skipped
+              ];
+              Chart.getChart('chart-test').update();
             
               const chartuat = document.getElementById('chart-uat').getContext('2d');
               Chart.getChart('chart-uat').data.labels = [

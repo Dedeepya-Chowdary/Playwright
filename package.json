@@ -2,7 +2,6 @@
   "name": "playwright",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -10,5 +9,14 @@
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.3"
-  }
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:cucumber": "cucumber-js"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^9.0.0",
+    "@playwright/test": "^1.40.0",
+    "axios": "^1.6.0"
+}
 }

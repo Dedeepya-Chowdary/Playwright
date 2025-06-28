@@ -4,39 +4,69 @@
 # https://aka.ms/yaml
 
 trigger:
-  - main
+  - main  # Manual or scheduled only
 
-# Specify the agent pool name'
+schedules:
+  # TEST & UAT every weekday at 7:30 AM Quebec (UTC+5 = 12:30)
+  - cron: "30 12 * * 1-5"
+    displayName: Run TEST & UAT at 7:30 AM Quebec Time
+    branches:
+      include:
+        - main
+    always: 'true'
+
+  # DEV at 9:30 AM Quebec (UTC+5 = 14:30)
+  - cron: "30 14 * * 1-5"
+    displayName: Run DEV before day starts
+    branches:
+      include:
+        - main
+    always: 'true'
+
+  # DEV at 6:30 PM Quebec (UTC+5 = 23:30)
+  - cron: "30 23 * * 1-5"
+    displayName: Run DEV before day ends
+    branches:
+      include:
+        - main
+    always: 'true'
+
 pool:
-  name: 'Votre Sante Agent Pool'  
+  name: 'Votre Sante Agent Pool'
 
 steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18'
+    displayName: 'Install Node.js'
 
-# Install the specified version of Node.js (LTS version)
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18'  # Use the latest LTS version of Node.js
-  displayName: 'Install Node.js'
+  - script: npm ci
+    displayName: 'Install dependencies'
 
-# Install dependencies using npm ci (for consistent installs based on package-lock.json)
-- script: npm ci
-  displayName: 'Install dependencies with npm ci'
+  - script: npx playwright install --with-deps
+    displayName: 'Install Playwright and browsers'
 
-# Install Playwright and its dependencies (including browsers)
-- script: npx playwright install --with-deps
-  displayName: 'Install Playwright browsers'
+  - script: |
+      echo "Checking scheduled environment..."
+      CURRENT_HOUR=$(date -u +"%H")
 
-# Run Playwright tests
-- script: npx playwright test
-  displayName: 'Run Playwright tests'
-  env:
-    CI: 'true'  # Ensures Playwright runs in CI mode (e.g., no visual UI, headless)
+      if [ "$CURRENT_HOUR" -eq 12 ]; then
+        echo "Running TEST & UAT"
+        npx playwright test tests --project=test-chromium --project=UAT-chromium
+      elif [ "$CURRENT_HOUR" -eq 14 ] || [ "$CURRENT_HOUR" -eq 23 ]; then
+        echo "Running DEV"
+        npx playwright test tests --project=dev-chromium
+      else
+        npx playwright test tests --project=test-chromium
+      fi
+    displayName: 'Run Playwright Tests for Scheduled Environment'
+    env:
+      CI: 'true'
 
-# Publish Playwright test report as a pipeline artifact
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: playwright-report  # Path to the Playwright test report
-    artifact: playwright-report    # Name of the artifact to publish
-    publishLocation: 'pipeline'    # Location to publish the artifact
-  condition: succeededOrFailed()  # Always publish, even if the tests fail
-  displayName: 'Publish Playwright Test Report'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: playwright-report.html
+      artifact: playwright-report
+      publishLocation: pipeline
+    condition: succeededOrFailed()
+    displayName: 'Publish Playwright Custom HTML Report'

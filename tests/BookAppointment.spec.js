@@ -1,63 +1,101 @@
-// bookappointment.spec.js
 const { test, expect } = require('@playwright/test');
-const { setupSteps, Navigationtoappointment, NavigationtoQuerypage } = require('./Setup');
+const { setupSteps,NavigationtoQuerypage } = require('./Setup'); // import navigation steps
 const { WaitPage } = require('./Waitpage'); 
-const { postalcode,numbersequential,accederbutton } = require('./envActions');
+const { loadPatientData, loadAllPatientData } = require('./Dataloader'); 
+
+const appointmentMap = {
+  'dev-orphan': 0,  'dev-familydoc': 1,  'dev-clinic': 2,  'dev-renew': 3,
+  'test-orphan': 4, 'test-familydoc': 5, 'test-clinic': 6, 'test-renew': 7,
+  'uat-orphan': 8,  'uat-familydoc': 9,  'uat-clinic': 10, 'uat-renew': 11,
+  'int-orphan': 12, 'int-familydoc': 13, 'int-clinic': 14, 'int-renew': 15
+};
+
+function getAppointmentIndex(env, testKey) {
+  const key = `${env}-${testKey}`;
+  const index = appointmentMap[key];
+  if (index === undefined) {
+    throw new Error(`No appointment index defined for key: ${key}`);
+  }
+  return index;
+}
 
 test.describe('Appointment Tests', () => {
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    const env = testInfo.project.metadata.env;
-    await setupSteps(page);
-    await NavigationtoQuerypage(page,env);
-    await Navigationtoappointment(page, env);
-  });
+    let patientData;
 
-  test('Appointment for orphan', async ({ page }, testInfo) => {
-    const env = testInfo.project.metadata.env;
-    await fillPatientDetails(page, env, {
-      lastName: 'Tinkle',
-      firstName: 'Ivana',
-      phone: '(798) 901-3720',
-      ramq: 'TINI92611289',
-      sequence: '1',
-      day: '12',
-      month: '11',
-      year: '1992',
-      gender: 'female'
+    test.beforeAll(async ({}, testInfo) => {
+        const env = testInfo.project.metadata.env || 'dev';
+        patientData = loadAllPatientData(env);
     });
-    await completeAppointment(page,env);
-  });
+    test.beforeEach(async ({ page },testInfo) => {
+        const env = testInfo.project.metadata.env;
+        await setupSteps(page);
+        await NavigationtoQuerypage(page,env);// Call the nvigation steps before each test
+    });
 
-  test('Appointment with family doctor', async ({ page }, testInfo) => {
-    const env = testInfo.project.metadata.env;
-    await fillPatientDetails(page, env, {
-      lastName: 'Vos-Sept',
-      firstName: 'Patient',
-      phone: '(798) 901-3720',
-      ramq: 'VOSP92010107',
-      sequence: '1',
-      day: '1',
-      year: '1992',
-      gender: 'male'
-    });
-    await completeAppointment(page,env);
-  });
+    test('Appointment for orphan', async ({ page },testInfo) => {
+        const env = testInfo.project.metadata.env;
+        // Create a new browser context
+        const waitPage = new WaitPage(page);
+        await page.locator('#txtSearch').fill('Cholesterol');
+        await page.getByRole('button', { name: 'Continuer' }).click();
+        await page.locator('#divResp').getByText('Non').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Inquiétude en lien avec des antécédents familiaux').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Voir les rendez-vous').click();
+        await page.waitForTimeout(20000);
+        const patient = patientData.orphan;
+        const index = getAppointmentIndex(env, 'orphan');
 
-  test('Appointment with clinic', async ({ page }, testInfo) => {
-    const env = testInfo.project.metadata.env;
-    await fillPatientDetails(page, env, {
-      lastName: 'Vos-Huit',
-      firstName: 'Patient',
-      phone: '(798) 901-3720',
-      ramq: 'VOSP92510108',
-      sequence: '1',
-      day: '1',
-      year: '1992',
-      gender: 'female'
+        await fillPatientDetails(page, env, patient);
+        await completeAppointment(page, env, index);
     });
-    await completeAppointment(page,env);
-  });
+
+    test('Appointment for familydoc', async ({ page},testInfo) => {
+        const env = testInfo.project.metadata.env;
+        await page.locator('#txtSearch').fill('Kidney pain');
+        await page.getByRole('button', { name: 'continuer' }).click();
+        await page.getByText('Oui', { exact: true }).click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.locator('#divResp').getByText('Non').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.locator('#divResp').getByText('Non').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.locator('#divResp').getByText('Non').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Oui, mais les douleurs ne').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Oui', { exact: true }).click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Oui', { exact: true }).click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.locator('#choice1').click();
+        await page.waitForTimeout(20000);
+        const patient = patientData.familydoc;
+        const index = getAppointmentIndex(env, 'familydoc');
+        await fillPatientDetails(page, env, patient);
+        await completeAppointment(page, env, index);
+    });
+
+    test('Appointment for clinic', async ({ page },testInfo) => {
+        const env = testInfo.project.metadata.env;
+        // Create a new browser context
+        const waitPage = new WaitPage(page);
+        await page.locator('#txtSearch').fill('Cholesterol');
+        await page.getByRole('button', { name: 'Continuer' }).click();
+        await page.locator('#divResp').getByText('Non').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Inquiétude en lien avec des antécédents familiaux').click();
+        await page.getByRole('button', { name: 'Suivant' }).click();
+        await page.getByText('Voir d\'autres options').click();
+        await page.waitForTimeout(20000);
+        await page.getByText('Voir les rendez-vous').click();
+        const patient = patientData.clinic;
+        const index = getAppointmentIndex(env, 'clinic');
+        await fillPatientDetails(page, env, patient);
+        await completeAppointment(page, env, index);
+    });
 });
 
 async function fillPatientDetails(page, env, data) {
@@ -65,7 +103,7 @@ async function fillPatientDetails(page, env, data) {
   await page.getByRole('textbox', { name: 'Prénom' }).fill(data.firstName);
   await page.getByRole('textbox', { name: 'Numéro de téléphone' }).fill(data.phone);
   await page.getByRole('textbox', { name: "Numéro d'assurance maladie" }).fill(data.ramq);
-  await page.getByRole('textbox', { name: 'Numéro séquentiel' }).fill('1');
+  await page.locator('#txtSeq').fill('1');
   await page.getByRole('spinbutton', { name: 'Jour' }).fill(data.day);
   if (data.month) await page.getByLabel('Mois').selectOption(data.month);
   await page.getByRole('spinbutton', { name: 'Année' }).fill(data.year);
@@ -73,43 +111,41 @@ async function fillPatientDetails(page, env, data) {
   await page.getByRole('textbox', { name: 'Code Postal' }).fill('G8Z1X3');
 }
 
-async function completeAppointment(page,env) {
+async function completeAppointment(page, env, index) {
   await page.getByRole('button', { name: 'Suivant' }).click();
   await page.waitForTimeout(20000);
-  // Check if appointments are available by looking for the first selector
-const appointmentLocator = page.locator('div.card-body span.lnr.lnr-store').first();
-const isAppointmentAvailable = await appointmentLocator.isVisible();
 
-if (isAppointmentAvailable) {
-  // Click the appointment selector
-  await appointmentLocator.click();
+  const appointmentLocator = page.locator('.appointment-card').nth(index);
+  const isAppointmentAvailable = await appointmentLocator.isVisible();
 
-  // Handle the "Suivant" (Continue) button
-  const continuerButton = await page.getByRole('button', { name: 'Suivant' });
-  const initialUrl = page.url();
-  await continuerButton.click();
-  await page.waitForTimeout(20000); // Prefer waitForLoadState over waitForTimeout
+  if (isAppointmentAvailable) {
+    await appointmentLocator.click();
 
-  const currentUrl = page.url();
-  const hasPageChanged = currentUrl !== initialUrl;
-  if (!hasPageChanged) {
-    console.log('No page change detected, clicking Continuer again');
+    const continuerButton = page.getByRole('button', { name: 'Suivant' });
+    const initialUrl = page.url();
+
     await continuerButton.click();
+    await page.waitForTimeout(20000);
+
+    const currentUrl = page.url();
+    const hasPageChanged = currentUrl !== initialUrl;
+
+    if (!hasPageChanged) {
+      console.log('No page change detected, clicking Continuer again');
+      await continuerButton.click();
+    } else {
+      console.log('Page changed, no second click needed');
+    }
+
+    await page.waitForTimeout(10000);
+    await page.getByRole('button', { name: 'Confirmer le rendez-vous' }).click();
+    await page.waitForTimeout(20000);
+
+    const confirmationHeader = page.locator('text=Rendez-vous confirmé!');
+    await expect(confirmationHeader).toHaveText('Rendez-vous confirmé!');
   } else {
-    console.log('Page changed, no second click needed');
+    await page.waitForTimeout(30000);
+    const confirmationHeader = page.locator('text=Rendez-vous disponibles');
+    await expect(confirmationHeader).toHaveText('Rendez-vous disponibles');
   }
-
-  // Wait for the confirmation button and click it
-  await page.getByRole('button', { name: 'Confirmer le rendez-vous' }).waitFor({ state: 'visible' });
-  await page.getByRole('button', { name: 'Confirmer le rendez-vous' }).click();
-
-  // Wait for confirmation and validate
-  const confirmationHeader = page.locator('text=Rendez-vous confirmé!');
-  await confirmationHeader.waitFor({ state: 'visible' });
-  await expect(confirmationHeader).toHaveText('Rendez-vous confirmé!');
-} else {
-  // Validate the URL for no appointments
-  const noAppointmentUrl = `https://votre-sante-${env}.powerappsportals.com/fr-FR/NoAppointment_available/`;//url differ based on evironments
-  await expect(page).toHaveURL(noAppointmentUrl); 
-}
 }
